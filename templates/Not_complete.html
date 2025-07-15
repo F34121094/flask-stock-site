@@ -1,0 +1,97 @@
+<!-- linebot.html -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>JS View台股查詢</title>
+  <link rel="icon" href="{{url_for('static', filename='data/LOGO2.png')}}" type="image/png">
+  <link rel="stylesheet" href="{{ url_for('static', filename='Style/nav.css') }}"> 
+  <style>
+    
+    
+    
+    body {
+      background-color: #121212;
+      color: white;
+      text-align: center;
+      font-family: "Segoe UI", "Microsoft JhengHei", sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    h1 {
+      color: #00e676;
+    }
+    .Icon{
+        margin-top: 40px;
+        height: 500px;
+    }
+    .word{
+        font-size: 24px;
+        font-weight: 600;
+    }
+    .navbar{
+      margin-bottom: 25px;
+    }
+    button{
+        height: 45px;
+        width: 100px;
+        font-size: 14px;
+        font-weight: 600;
+        background-color: aqua;
+        border-style: none;
+        border-radius: 10px;
+        opacity: 1;
+        transition: opacity 0.2s;
+    }
+    button:hover{
+        opacity: 0.6;
+    }
+    button:active{
+        opacity: 0.3;
+    }
+    a{
+        text-decoration: none;
+        color: black;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+        <div class="left">
+            <a href="{{url_for('home')}}"><img class="logo" src="{{url_for('static', filename='data/LOGO.png')}}"></a>
+            <ul>
+                <li><a href="{{ url_for('stock_page', code='2330') }}">個股查詢</a></li>
+                <li class="dropdown"><a href="{{url_for('not_complete')}}">法人買賣超</a></li>
+                <li class="dropdown"><a href="{{url_for('not_complete')}}">技術分析</a></li>
+                <li class="dropdown"><a href="#">相關網站連結</a>
+                    <ul class="dropdown-content">
+                        <li><a href="https://www.twse.com.tw/zh/index.html" target="_blank">台灣證卷交易所</a></li>
+                        <li><a href="https://mops.twse.com.tw/mops/#/web/home" target="_blank">公開資訊觀測站</a></li>
+                        <li><a href="https://tw.stock.yahoo.com/" target="_blank">Yahoo股市</a></li>
+                        <li><a href="https://statementdog.com/" target="_blank">財報狗</a></li>
+                        <li><a href="https://www.investing.com/" target="_blank">Investing.com</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown"><a href="#">更多</a>
+                    <ul class="dropdown-content">
+                        <li><a href="{{url_for('contact_us')}}">關於我們</a></li>
+                        <li><a href="{{url_for('linebot')}}">Line 機器人</a></li>
+                        <li><a href="{{url_for('feedback')}}">意見回饋</a></li>
+                    </ul>
+                </li>
+                
+            </ul>
+        </div>
+        <div class="right">
+            <a href="#">登入</a>
+            <a href="#">註冊</a>
+        </div>
+    </nav>
+  
+    <img class="Icon" src="{{url_for('static', filename='data/not_complete_icon.png')}}" alt="Line Bot QR Code">
+    <p class="word">你所查詢的功能尚未完成，我們將努力更新完善此功能！</p>
+    <button><a href="{{url_for('home')}}">返回首頁</a></button>
+</body>
+</html>

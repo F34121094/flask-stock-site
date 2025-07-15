@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>JS View台股查詢</title>
+    <link rel="icon" href="{{url_for('static', filename='data/LOGO2.png')}}" type="image/png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Style/nav.css') }}"> 
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: "Segoe UI", "Microsoft JhengHei", sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            text-align: center;
+            padding: 2rem 1rem;
+            background-color: #1e1e1e;
+            color: #00bcd4;
+        }
+        .price{
+            font-size: 20px;
+            font-weight: 600;
+        }
+        main {
+            max-width: 900px;
+            margin: auto;
+            padding: 2rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+        th {
+            background-color: #212121;
+        }
+        .pos {
+            color: #ff5252;
+            font-weight: bold;
+        }
+        .neg {
+            color: #69f0ae;
+            font-weight: bold;
+        }
+        .section-title {
+            font-size: 20px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 0.5rem;
+            color: #fff;
+            margin-top: 0px;
+        }
+        .stock_name{
+            font-size: 1.5rem;
+        }
+        .date{
+            font-weight: normal;
+            color: #aaa;
+        }
+        .search-box {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        input[type="text"] {
+            padding: 0.5rem;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 2px solid #555;
+            background-color: #1e1e1e;
+            color: #fff;
+        }
+        input[type="submit"] {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            font-weight: 400;
+            margin-left: 10px;
+            background-color: #00bcd4;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .stats {
+            background-color: #1e1e1e;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+        .label {
+            color: #aaa;
+        }
+        .red {
+            color: #ff5252;
+        }
+        .green {
+            color: #69f0ae;
+        }
+        .gray-text{
+            background-color: #1e1e1e;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="left">
+            <a href="{{url_for('home')}}"><img class="logo" src="{{url_for('static', filename='data/LOGO.png')}}"></a>
+            <ul>
+                <li><a href="{{ url_for('stock_page', code='2330') }}">個股查詢</a></li>
+                <li class="dropdown"><a href="{{url_for('not_complete')}}">法人買賣超</a></li>
+                <li class="dropdown"><a href="{{url_for('not_complete')}}">技術分析</a></li>
+                <li class="dropdown"><a href="#">相關網站連結</a>
+                    <ul class="dropdown-content">
+                        <li><a href="https://www.twse.com.tw/zh/index.html" target="_blank">台灣證卷交易所</a></li>
+                        <li><a href="https://mops.twse.com.tw/mops/#/web/home" target="_blank">公開資訊觀測站</a></li>
+                        <li><a href="https://tw.stock.yahoo.com/" target="_blank">Yahoo股市</a></li>
+                        <li><a href="https://statementdog.com/" target="_blank">財報狗</a></li>
+                        <li><a href="https://www.investing.com/" target="_blank">Investing.com</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown"><a href="#">更多</a>
+                    <ul class="dropdown-content">
+                        <li><a href="{{url_for('contact_us')}}">關於我們</a></li>
+                        <li><a href="{{url_for('linebot')}}">Line 機器人</a></li>
+                        <li><a href="{{url_for('feedback')}}">意見回饋</a></li>
+                    </ul>
+                </li>
+                
+            </ul>
+        </div>
+        <div class="right">
+            <a href="#">登入</a>
+            <a href="#">註冊</a>
+        </div>
+    </nav>
+    <header>
+        <h1>台灣股票數據查詢</h1>
+        <p>展示最新的法人買賣超資訊與技術分析摘要</p>
+    </header>
+    <main>
+        <div class="search-box">
+            <form action="{{ url_for('home') }}" method="POST">
+                <input type="text" name="stock" placeholder="請輸入股票名稱或代號">
+                <input type="submit" value="查詢">
+            </form>
+        </div>
+        <div class="stats">
+            <h2 class="section-title"><span class="stock_name">{{ summary.stock_name }}</span> {{ summary.stock_code }} <span class = "date">({{ summary.date }})</h2>
+            <p><span class="price"><span class="{% if summary.price_info.close > summary.price_info.close_yesterday %}
+                                                red
+                                            {% elif summary.price_info.close < summary.price_info.close_yesterday %}
+                                                green
+                                            {% else %}
+                                                label
+                                            {% endif %}">{{summary.price_info.close}}&nbsp;&nbsp;{% if summary.price_info.close > summary.price_info.close_yesterday %}
+                                                                                        ▲
+                                                                                    {% elif summary.price_info.close < summary.price_info.close_yesterday %}
+                                                                                        ▼
+                                                                                    {% endif %}{{summary.price_info.gap}} ({{summary.price_info.change_percent}}%)</span></p>
+            <p>開盤 = <span class="{% if summary.price_info.open > summary.price_info.close_yesterday %}
+                red
+             {% elif summary.price_info.open < summary.price_info.close_yesterday %}
+                green
+             {% else %}
+                label
+             {% endif %}">{{ summary.price_info.open }}</span>    &nbsp;&nbsp;&nbsp;&nbsp;昨收 = {{summary.price_info.close_yesterday}}</p>
+            <p>最高 = <span class="red">{{summary.price_info.high}}</span>&nbsp;&nbsp;→&nbsp;&nbsp;上影線 {{summary.price_info.upper_shadow}}%</p>
+            <p>最低 = <span class="green">{{summary.price_info.low}}</span>&nbsp;&nbsp;→&nbsp;&nbsp;下影線 {{summary.price_info.lower_shadow}}%</p>
+            <p>均價 = <span class="{% if summary.price_info.avg > summary.price_info.close_yesterday %}
+                red
+             {% elif summary.price_info.avg < summary.price_info.close_yesterday %}
+                green
+             {% else %}
+                label
+             {% endif %}">{{summary.price_info.avg}}</span></p>
+            <p>總量 = {{summary.price_info.volume}}    &nbsp;&nbsp;&nbsp;&nbsp;量增/減 = <span class="red">{{summary.price_info.volume_change_percent}}%</span></p>
+        </div>
+        <h2 class="section-title">{{summary.stock_code}} 法人買賣超</h2>
+        <table>
+            <tr>
+                <th>日期</th>
+                <th>外資</th>
+                <th>投信</th>
+                <th>自營商</th>
+                <th>合計</th>
+            </tr>
+            {% for row in summary.institutional_trading %}
+            <tr>
+                <td style="font-weight: 600;" class="{% if '總和' in row.date %}gray-text{% endif %}">{{ row.date }}</td>
+                <td class="{% if row.foreign > 0 %}
+                    pos
+                {% elif row.foreign < 0 %}
+                    neg
+                {% else %}
+                    label
+                {% endif %}">{{ row.foreign }}</td>
+                <td class="{% if row.investment > 0 %}
+                    pos
+                {% elif row.investment < 0 %}
+                    neg
+                {% else %}
+                    label
+                {% endif %}">{{ row.investment }}</td>
+                <td class="{% if row.dealer > 0 %}
+                    pos
+                {% elif row.dealer < 0 %}
+                    neg
+                {% else %}
+                    label
+                {% endif %}">{{ row.dealer }}</td>
+                <td class="{% if row.total > 0 %}
+                    pos
+                {% elif row.total < 0 %}
+                    neg
+                {% else %}
+                    label
+                {% endif %}">{{ row.total }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <p style="text-align:center; font-size: 0.9rem; color: #888">資料來源:Yahoo 奇摩股市 (2025/07/09)</p>
+    </main>
+</body>
+</html>

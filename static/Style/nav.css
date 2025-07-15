@@ -1,0 +1,100 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+.logo{
+    height: 50px;
+    width: auto;
+    margin-right: 15px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.navbar .left{
+    display: flex;
+    align-items: center;
+}
+
+.navbar .right {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.navbar .left>ul {
+    list-style: none;
+    margin: 0;
+    display: flex;
+    padding: 10px 20px;
+}
+
+.navbar li {
+    position: relative;
+}
+
+.navbar a {
+    display: block;
+    padding: 0.8rem 1rem;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.navbar a:hover {
+    border-radius: 10px;
+    background-color: #333;
+}
+
+/* 顯示 dropdown */
+.dropdown {
+    position: relative;
+}
+
+.dropdown:hover .dropdown-content {
+    transform: translateY(0);
+    /* 回到原位 */
+    opacity: 1;
+    visibility: visible;
+    display: block;
+}
+
+.dropdown-content {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+
+    position: absolute;
+    list-style: none;
+    top: 100%;
+    left: 0;
+    background-color: #222;
+    min-width: 180px;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding-left: 0px;
+    min-width: 120px;
+    /* 預設不要太窄 */
+    max-width: 300px;
+    /* 最寬限制，避免過長 */
+    white-space: nowrap;
+    /* 一行顯示不換行 */
+}
+
+.dropdown-content li {
+    list-style: none;
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.dropdown-content li a {
+    list-style: none;
+    display: block;
+    color: white;
+}
+
+.dropdown-content li:hover {
+    background-color: #333;
+}

@@ -1,0 +1,117 @@
+<!-- linebot.html -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>JS View台股查詢</title>
+  <link rel="icon" href="{{url_for('static', filename='data/LOGO2.png')}}" type="image/png">
+  <link rel="stylesheet" href="{{ url_for('static', filename='Style/nav.css') }}"> > 
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      text-align: center;
+      font-family: "Segoe UI", "Microsoft JhengHei", sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    
+    #feedback-form {
+        background-color: #1e1e1e;
+        padding: 20px;
+        border-radius: 10px;
+        width: 90%;
+        font-weight: 600;
+        max-width: 600px;
+        margin: 20px auto;
+        color: white;
+    }
+
+    textarea, select {
+        margin-top: 10px;
+        width: 100%;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        padding-right: -6px;
+        border-radius: 5px;
+        border: none;
+        resize: none;
+    }
+
+    #submit-btn {
+        background-color: cyan;
+        color: black;
+        border: none;
+        padding: 10px 20px;
+        font-weight: bold;
+        border-radius: 10px;
+        cursor: pointer;
+        opacity: 1;
+        transition: opacity 0.2s;
+    }
+    #submit-btn:hover{
+        opacity: 0.6;
+    }
+    #submit-btn:active{
+        opacity: 0.3;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+        <div class="left">
+            <a href="{{url_for('home')}}"><img class="logo" src="{{url_for('static', filename='data/LOGO.png')}}"></a>
+            <ul>
+                <li><a href="{{ url_for('stock_page', code='2330') }}">個股查詢</a></li>
+                <li class="dropdown"><a href="{{url_for('not_complete')}}">法人買賣超</a></li>
+                <li class="dropdown"><a href="{{url_for('not_complete')}}">技術分析</a></li>
+                <li class="dropdown"><a href="#">相關網站連結</a>
+                    <ul class="dropdown-content">
+                        <li><a href="https://www.twse.com.tw/zh/index.html" target="_blank">台灣證卷交易所</a></li>
+                        <li><a href="https://mops.twse.com.tw/mops/#/web/home" target="_blank">公開資訊觀測站</a></li>
+                        <li><a href="https://tw.stock.yahoo.com/" target="_blank">Yahoo股市</a></li>
+                        <li><a href="https://statementdog.com/" target="_blank">財報狗</a></li>
+                        <li><a href="https://www.investing.com/" target="_blank">Investing.com</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown"><a href="#">更多</a>
+                    <ul class="dropdown-content">
+                        <li><a href="{{url_for('contact_us')}}">關於我們</a></li>
+                        <li><a href="{{url_for('linebot')}}">Line 機器人</a></li>
+                        <li><a href="{{url_for('feedback')}}">意見回饋</a></li>
+                    </ul>
+                </li>
+                
+            </ul>
+        </div>
+        <div class="right">
+            <a href="#">登入</a>
+            <a href="#">註冊</a>
+        </div>
+    </nav>
+  <h2>使用者回饋</h2>
+    <div id="feedback-form">
+        <label for="rating">評分：</label>
+        <select id="rating">
+            <option value="5">★★★★★</option>
+            <option value="4">★★★★</option>
+            <option value="3">★★★</option>
+            <option value="2">★★</option>
+            <option value="1">★</option>
+        </select><br><br>
+
+        <label for="comment">意見：</label><br>
+        <textarea id="comment" rows="5" cols="50" placeholder="請留下您的寶貴建議"></textarea><br><br>
+
+        <button id="submit-btn">送出</button>
+    </div>
+
+    <div id="feedback-list">
+        <h3>所有回饋</h3>
+        <ul id="comments"></ul>
+    </div>
+
+</body>
+</html>
